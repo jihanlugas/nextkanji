@@ -2,19 +2,30 @@ import { Fragment, useContext, useEffect } from "react"
 import AppContext from "../../stores/appContext"
 import useAuth from "../../lib/useAuth"
 import type { NextPage } from "next"
+import { GoThreeBars } from 'react-icons/go'
 
 type Props = {
-
+    onClickOverlay: Function,
 };
 
 
-const Header: NextPage<Props> = ({ children }) => {
+const Header: NextPage<Props> = ({ children, onClickOverlay }) => {
     const { notif } = useContext(AppContext)
+
+    const handleClick = () => {
+
+    }
 
     return (
         <header>
             <div className={"bg-green-500 h-16 flex items-center px-4 shadow-lg"}>
+                <div className="-ml-2 flex justify-center items-center h-12 w-12 cursor-pointer bg-red-200" onClick={() => onClickOverlay()}>
+                    <div className="flex justify-center items-center h-8 w-8 ">
+                        <GoThreeBars size={"2em"} />
+                    </div>
+                </div>
                 <div>{process.env.APP_NAME}</div>
+
                 {/* <div className={"hidden sm:flex ml-auto"}>
                     <div className={"ml-4"}>About</div>
                     {auth ? (

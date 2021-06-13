@@ -28,7 +28,7 @@ class Api {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },
-            params: payload,
+            // params: payload,
             timeout: 20000,
             responseType: 'json',
         }).then((res: { data: any; }) => convertJsonData(res.data), (error: { response: { data: any; status: any; }; }) => error.response.data);
