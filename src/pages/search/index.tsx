@@ -7,6 +7,7 @@ import ButtonSubmit from "../../components/formik/ButtonSubmit";
 import { useMutation, useQuery } from "react-query";
 import { Api } from "../../lib/Api";
 import { useDebounce } from "../../utils/Hooks"
+import { isEmptyObject } from "../../utils/Validate"
 
 
 
@@ -28,12 +29,12 @@ interface Ireading {
     name_kanji?: string[],
 }
 
-interface Iwords {
-    [index: number]: {
-        variants: any,
-        meanings: any,
-    };
+interface Iword {
+    variants: any,
+    meanings: any,
 }
+
+interface Iwords extends Array<Iword> { }
 
 
 interface Idata {
@@ -94,7 +95,7 @@ const Search = () => {
         if (dataWords && !dataWords.error) {
             setWords(dataWords)
         } else {
-            setWords({})
+            setWords([])
         }
     }, [dataWords])
 
@@ -104,30 +105,9 @@ const Search = () => {
             setReading({})
             setWords([])
         } else {
-            mutateKanji(search, {
-                // onSuccess: (res) => {
-                //     console.log("onSuccess res ", res)
-                // },
-                // onError: (res) => {
-                //     console.log("onError res ", res)
-                // }
-            })
-            mutateReading(search, {
-                // onSuccess: (res) => {
-                //     console.log("onSuccess res ", res)
-                // },
-                // onError: (res) => {
-                //     console.log("onError res ", res)
-                // }
-            })
-            mutateWords(search, {
-                // onSuccess: (res) => {
-                //     console.log("onSuccess res ", res)
-                // },
-                // onError: (res) => {
-                //     console.log("onError res ", res)
-                // }
-            })
+            mutateKanji(search)
+            mutateReading(search)
+            mutateWords(search)
         }
     }, [debounceSearch])
 
@@ -142,7 +122,7 @@ const Search = () => {
                     <div className={"text-2xl"}>Search Kanji</div>
                 </div>
                 <div className={""}>
-                    <div className={"flex flex-col w-full"}>
+                    <div className={"flex flex-col w-full mb-8"}>
                         <input
                             type="text"
                             value={search}
@@ -150,48 +130,146 @@ const Search = () => {
                             className={"w-full border-2 rounded h-10 px-2 bg-gray-50"}
                         />
                     </div>
-                    <div className={"mb-8"}>
-                        <div>kanji</div>
-                        {JSON.stringify(kanji, null, 4)}
-                    </div>
-                    <div className={"mb-8"}>
-                        <div>reading</div>
-                        {JSON.stringify(reading, null, 4)}
-                    </div>
-                    <div className={"mb-8"}>
-                        <div>words</div>
-                        {JSON.stringify(words, null, 4)}
-                    </div>
-                    {/* <Formik
-                        initialValues={initFormikValue}
-                        enableReinitialize={true}
-                        onSubmit={handleSubmit}
-                    >
-                        {() => {
-                            return (
-                                <Form>
-                                    <div className="mb-4">
-                                        <TextField
-                                            label={"Search"}
-                                            name={"search"}
-                                            type={"search"}
-                                            placeholder={"search"}
-                                        />
+                    {!isEmptyObject(kanji) && (
+                        <div className={"mb-8"}>
+                            <div className={"text-2xl font-bold"}>kanji</div>
+                            <div className={"text-lg"}>{kanji.kanji}</div>
+                            <div className={""}>Grades: {kanji.grade}</div>
+                            <div className={""}>Stroke: {kanji.stroke_count}</div>
+                            {kanji.meanings.length > 0 && (
+                                <div>
+                                    <div className={""}>Meanings: </div>
+                                    <div className={"flex flex-row"}>
+                                        {kanji.meanings.map((meaning, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{meaning}</div>
+                                            )
+                                        })}
                                     </div>
-                                    <div className="mb-4">
-                                        <ButtonSubmit
-                                            label={"Search"}
-                                        // loading={isLoading}
-                                        // disabled={isLoading}
-                                        />
+                                </div>
+
+                            )}
+                            {kanji.kun_readings.length > 0 && (
+                                <div>
+                                    <div className={""}>Kun Readings: </div>
+                                    <div className={"flex flex-row"}>
+                                        {kanji.kun_readings.map((kun, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{kun}</div>
+                                            )
+                                        })}
                                     </div>
-                                </Form>
-                            )
-                        }}
-                    </Formik> */}
+                                </div>
+
+                            )}
+                            {kanji.on_readings.length > 0 && (
+                                <div>
+                                    <div className={""}>On Readings: </div>
+                                    <div className={"flex flex-row"}>
+                                        {kanji.on_readings.map((on, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{on}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            )}
+                            {kanji.name_readings.length > 0 && (
+                                <div>
+                                    <div className={""}>Name Readings: </div>
+                                    <div className={"flex flex-row"}>
+                                        {kanji.name_readings.map((name, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{name}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            )}
+                        </div>
+                    )}
+                    {!isEmptyObject(reading) && (
+                        <div className={"mb-8"}>
+                            <div className={"text-2xl font-bold"}>reading</div>
+                            <div className={"text-lg"}>{reading.reading}</div>
+                            {reading.main_kanji.length > 0 && (
+                                <div>
+                                    <div className={""}>Main Kanji: </div>
+                                    <div className={"flex flex-row"}>
+                                        {reading.main_kanji.map((main, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{main}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            )}
+                            {reading.name_kanji.length > 0 && (
+                                <div>
+                                    <div className={""}>Name Kanji: </div>
+                                    <div className={"flex flex-row"}>
+                                        {reading.name_kanji.map((name, key) => {
+                                            return (
+                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{name}</div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+
+                            )}
+                        </div>
+                    )}
+                    {words.length > 0 && (
+                        <div className={"mb-8"}>
+                            <div className={"text-2xl font-bold"}>Words</div>
+                            {words.map((word, key) => {
+                                return (
+                                    <div key={key} className={"mb-2"}>
+                                        {word.variants.length > 0 && (
+                                            <div className={"mb-2"}>
+                                                <div className={"font-bold"}>Variants</div>
+                                                {word.variants.map((variant, key) => {
+                                                    return (
+                                                        <div key={key}>
+                                                            <div className={""}>Written: {variant.written}</div>
+                                                            <div className={""}>Pronounced: {variant.pronounced}</div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )}
+                                        {word.meanings.length > 0 && (
+                                            <div className={"mb-2"}>
+                                                <div className={"font-bold"}>Meanings</div>
+                                                {word.meanings.map((meaning, key) => {
+                                                    return (
+                                                        <div key={key}>
+                                                            {meaning.glosses.length > 0 && (
+                                                                <div>
+                                                                    <div className={"font-bold"}>Glosses</div>
+                                                                    {meaning.glosses.map((gloss, key) => {
+                                                                        return (
+                                                                            <div key={key}>{gloss}</div>
+                                                                        )
+                                                                    })}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
                 </div>
             </div>
-        </Main>
+        </Main >
     )
 }
 
