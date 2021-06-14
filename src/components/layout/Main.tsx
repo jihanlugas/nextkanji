@@ -18,7 +18,7 @@ const Main: NextPage<Props> = ({ children }) => {
     }
 
     return (
-        <main className={"h-screen bg-gray-200"}>
+        <main className={"h-screen"}>
             <Sidebar onClickOverlay={onClickOverlay} show={show} />
             <Header onClickOverlay={onClickOverlay} />
             {children}

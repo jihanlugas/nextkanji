@@ -117,7 +117,7 @@ const Search = () => {
             <Head>
                 <title>Search Kanji</title>
             </Head>
-            <div className={"p-4"}>
+            <div className={"p-4 font-sans"}>
                 <div className={"mb-4"}>
                     <div className={"text-2xl"}>Search Kanji</div>
                 </div>
@@ -132,61 +132,63 @@ const Search = () => {
                     </div>
                     {!isEmptyObject(kanji) && (
                         <div className={"mb-8"}>
-                            <div className={"text-2xl font-bold"}>kanji</div>
-                            <div className={"text-lg"}>{kanji.kanji}</div>
-                            <div className={""}>Grades: {kanji.grade}</div>
-                            <div className={""}>Stroke: {kanji.stroke_count}</div>
-                            {kanji.meanings.length > 0 && (
-                                <div>
-                                    <div className={""}>Meanings: </div>
-                                    <div className={"flex flex-row"}>
-                                        {kanji.meanings.map((meaning, key) => {
-                                            return (
-                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{meaning}</div>
-                                            )
-                                        })}
+                            <div className={"flex mb-4"}>
+                                <div className={"h-24 w-24 mr-4"}>
+                                    <div className={"bg-gray-50 rounded-lg flex justify-center items-center w-full h-full"}>
+                                        <div className={"text-6xl "}>{kanji.kanji}</div>
                                     </div>
                                 </div>
-
-                            )}
-                            {kanji.kun_readings.length > 0 && (
-                                <div>
-                                    <div className={""}>Kun Readings: </div>
-                                    <div className={"flex flex-row"}>
-                                        {kanji.kun_readings.map((kun, key) => {
-                                            return (
-                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{kun}</div>
-                                            )
-                                        })}
+                                <div className={"grid grid-cols-3 flex-grow"}>
+                                    <div className={"flex flex-col items-center justify-center"}>
+                                        <div className={"text-xl font-bold text-blue-800"}>{kanji.grade}</div>
+                                        <div className={""}>Grades</div>
                                     </div>
+                                    <div className={"flex flex-col items-center justify-center"}>
+                                        <div className={"text-xl font-bold text-blue-800"}>{kanji.jlpt ? kanji.jlpt : '-'}</div>
+                                        <div className={""}>JlPT</div>
+                                    </div>
+                                    <div className={"flex flex-col items-center justify-center"}>
+                                        <div className={"text-xl font-bold text-blue-800"}>{kanji.stroke_count}</div>
+                                        <div className={""}>Stroke</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {kanji.meanings.length > 0 && (
+                                <div className={"flex flex-wrap mb-4"}>
+                                    {kanji.meanings.map((meaning, key) => {
+                                        return (
+                                            <div className={"mr-4 mb-2"} key={key}>{meaning}</div>
+                                        )
+                                    })}
                                 </div>
 
                             )}
                             {kanji.on_readings.length > 0 && (
-                                <div>
-                                    <div className={""}>On Readings: </div>
-                                    <div className={"flex flex-row"}>
-                                        {kanji.on_readings.map((on, key) => {
-                                            return (
-                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{on}</div>
-                                            )
-                                        })}
-                                    </div>
+                                <div className={"flex flex-wrap mb-4"}>
+                                    {kanji.on_readings.map((on, key) => {
+                                        return (
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-green-400 text-gray-200 rounded font-bold"} key={key}>{on}</div>
+                                        )
+                                    })}
                                 </div>
-
+                            )}
+                            {kanji.kun_readings.length > 0 && (
+                                <div className={"flex flex-wrap mb-4"}>
+                                    {kanji.kun_readings.map((kun, key) => {
+                                        return (
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-blue-400 text-gray-200 rounded font-bold"} key={key}>{kun}</div>
+                                        )
+                                    })}
+                                </div>
                             )}
                             {kanji.name_readings.length > 0 && (
-                                <div>
-                                    <div className={""}>Name Readings: </div>
-                                    <div className={"flex flex-row"}>
-                                        {kanji.name_readings.map((name, key) => {
-                                            return (
-                                                <div className={"mr-4 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{name}</div>
-                                            )
-                                        })}
-                                    </div>
+                                <div className={"flex flex-wrap mb-4"}>
+                                    {kanji.name_readings.map((name, key) => {
+                                        return (
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{name}</div>
+                                        )
+                                    })}
                                 </div>
-
                             )}
                         </div>
                     )}
@@ -227,15 +229,14 @@ const Search = () => {
                             <div className={"text-2xl font-bold"}>Words</div>
                             {words.map((word, key) => {
                                 return (
-                                    <div key={key} className={"mb-2"}>
+                                    <div key={key} className={"mb-2 bg-gray-100 p-2 rounded"}>
                                         {word.variants.length > 0 && (
                                             <div className={"mb-2"}>
-                                                <div className={"font-bold"}>Variants</div>
                                                 {word.variants.map((variant, key) => {
                                                     return (
-                                                        <div key={key}>
-                                                            <div className={""}>Written: {variant.written}</div>
-                                                            <div className={""}>Pronounced: {variant.pronounced}</div>
+                                                        <div key={key} className={"bg-gray-700 text-gray-200 p-2 rounded-lg mb-2"}>
+                                                            <div className={"text-sm"}>{variant.pronounced}</div>
+                                                            <div className={"text-2xl"}>{variant.written}</div>
                                                         </div>
                                                     )
                                                 })}
@@ -243,16 +244,14 @@ const Search = () => {
                                         )}
                                         {word.meanings.length > 0 && (
                                             <div className={"mb-2"}>
-                                                <div className={"font-bold"}>Meanings</div>
                                                 {word.meanings.map((meaning, key) => {
                                                     return (
                                                         <div key={key}>
                                                             {meaning.glosses.length > 0 && (
-                                                                <div>
-                                                                    <div className={"font-bold"}>Glosses</div>
+                                                                <div className={"mb-1"}>
                                                                     {meaning.glosses.map((gloss, key) => {
                                                                         return (
-                                                                            <div key={key}>{gloss}</div>
+                                                                            <div key={key}>{(key + 1) + ". " + gloss}</div>
                                                                         )
                                                                     })}
                                                                 </div>
