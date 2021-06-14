@@ -128,6 +128,7 @@ const Search = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className={"w-full border-2 rounded h-10 px-2 bg-gray-50"}
+                            placeholder={"Ex: 愛 | あい | 愛しい"}
                         />
                     </div>
                     {!isEmptyObject(kanji) && (
@@ -165,27 +166,44 @@ const Search = () => {
                             )}
                             {kanji.on_readings.length > 0 && (
                                 <div className={"flex flex-wrap mb-4"}>
+                                    <div className={"flex w-full mb-2"}>
+                                        <div>On Reading</div>
+                                    </div>
                                     {kanji.on_readings.map((on, key) => {
+                                        const onread = on.split(".")
                                         return (
-                                            <div className={"mr-4 mb-2 px-2 py-1 bg-green-400 text-gray-200 rounded font-bold"} key={key}>{on}</div>
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-green-400 rounded flex"} key={key}>
+                                                <div className={"text-gray-100"}>{onread[0]}</div>
+                                                <div className={"text-gray-300"}>{onread[1]}</div>
+                                            </div>
                                         )
                                     })}
                                 </div>
                             )}
                             {kanji.kun_readings.length > 0 && (
                                 <div className={"flex flex-wrap mb-4"}>
+                                    <div className={"flex w-full mb-2"}>
+                                        <div>Kun Reading</div>
+                                    </div>
                                     {kanji.kun_readings.map((kun, key) => {
+                                        const kunread = kun.split(".")
                                         return (
-                                            <div className={"mr-4 mb-2 px-2 py-1 bg-blue-400 text-gray-200 rounded font-bold"} key={key}>{kun}</div>
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-blue-400 rounded flex"} key={key}>
+                                                <div className={"text-gray-100"}>{kunread[0]}</div>
+                                                <div className={"text-gray-300"}>{kunread[1]}</div>
+                                            </div>
                                         )
                                     })}
                                 </div>
                             )}
                             {kanji.name_readings.length > 0 && (
                                 <div className={"flex flex-wrap mb-4"}>
+                                    <div className={"flex w-full mb-2"}>
+                                        <div>Name Reading</div>
+                                    </div>
                                     {kanji.name_readings.map((name, key) => {
                                         return (
-                                            <div className={"mr-4 mb-2 px-2 py-1 bg-gray-700 text-gray-200 rounded font-bold"} key={key}>{name}</div>
+                                            <div className={"mr-4 mb-2 px-2 py-1 bg-gray-700 text-gray-200 rounded"} key={key}>{name}</div>
                                         )
                                     })}
                                 </div>
