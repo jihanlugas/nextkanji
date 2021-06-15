@@ -57,23 +57,14 @@ const Search = () => {
     const [search, setSearch] = useState<string>("")
     const debounceSearch = useDebounce(search, 1000)
 
-
     const [kanji, setKanji] = useState<Ikanji>({})
     const [reading, setReading] = useState<Ireading>({})
     const [words, setWords] = useState<Iwords>([])
 
-    // const { data: dataKanji, isLoading, error } = useQuery("kanji", () => Api.get(`/kanji/${search}`))
-
-    // console.log("dataKanji ", dataKanji) 
-    // console.log("kanji ", kanji)
 
     const { data: dataKanji, mutate: mutateKanji } = useMutation((val: string) => Api.get(`/kanji/${val}`))
     const { data: dataReading, mutate: mutateReading } = useMutation((val: string) => Api.get(`/reading/${val}`))
     const { data: dataWords, mutate: mutateWords } = useMutation((val: string) => Api.get(`/words/${val}`))
-
-    const handleSubmit = (values: FormikValues) => {
-
-    }
 
     useEffect(() => {
         if (dataKanji && !dataKanji.error) {
@@ -128,7 +119,7 @@ const Search = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             className={"w-full border-2 rounded h-10 px-2 bg-gray-50"}
-                            placeholder={"Ex: 愛 | あい | 愛しい"}
+                            placeholder={"Search ..."}
                         />
                     </div>
                     {!isEmptyObject(kanji) && (
@@ -136,7 +127,7 @@ const Search = () => {
                             <div className={"flex mb-4"}>
                                 <div className={"h-24 w-24 mr-4"}>
                                     <div className={"bg-gray-50 rounded-lg flex justify-center items-center w-full h-full"}>
-                                        <div className={"text-6xl "}>{kanji.kanji}</div>
+                                        <div className={"text-6xl font-kanji"}>{kanji.kanji}</div>
                                     </div>
                                 </div>
                                 <div className={"grid grid-cols-3 flex-grow"}>
@@ -146,7 +137,7 @@ const Search = () => {
                                     </div>
                                     <div className={"flex flex-col items-center justify-center"}>
                                         <div className={"text-xl font-bold text-blue-800"}>{kanji.jlpt ? kanji.jlpt : '-'}</div>
-                                        <div className={""}>JlPT</div>
+                                        <div className={""}>JLPT</div>
                                     </div>
                                     <div className={"flex flex-col items-center justify-center"}>
                                         <div className={"text-xl font-bold text-blue-800"}>{kanji.stroke_count}</div>
